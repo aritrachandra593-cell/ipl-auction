@@ -124,11 +124,12 @@
     const byName = rawByName(raw);
     const seen = new Set();
     const retainedNames = new Set(Object.values(cfg.retained || {}).flat().map(nameKey));
+    const tradedNames = new Set(Object.values(cfg.traded || {}).flat().map(nameKey));
     const players = [];
     Object.keys(cfg.released || {}).forEach((teamId) => {
       (cfg.released[teamId] || []).forEach((name) => {
         const key = nameKey(name);
-        if (seen.has(key) || retainedNames.has(key)) return;
+        if (seen.has(key) || retainedNames.has(key) || tradedNames.has(key)) return;
         seen.add(key);
         const meta = metaForName(name, byName, cfg);
         players.push({ name, role: meta.role, country: meta.country, lastTeam: teamId, tier: meta.tier });
@@ -137,7 +138,7 @@
     (cfg.extraReleased || []).forEach((entry) => {
       const name = typeof entry === 'string' ? entry : entry.name;
       const key = nameKey(name);
-      if (seen.has(key) || retainedNames.has(key)) return;
+      if (seen.has(key) || retainedNames.has(key) || tradedNames.has(key)) return;
       seen.add(key);
       const meta = metaForName(name, byName, cfg);
       players.push({
@@ -164,6 +165,7 @@
 
   function buildRetainedSquads(cfg, raw) {
     const byName = rawByName(raw);
+    const tradedNames = new Set(Object.values(cfg.traded || {}).flat().map(nameKey));
     return TEAMS.map((t) => {
       const teamCfg = (cfg.teams && cfg.teams[t.id]) || { purse: cfg.purse, slots: cfg.squadCap, overseas: 0 };
       const squad = (cfg.retained && cfg.retained[t.id] || []).map((name) => {
@@ -178,7 +180,8 @@
           tier: meta.tier,
           base: 0,
           rating: clamp(Math.round(((RATING_BY_TIER[meta.tier] || 6.8) + jitter) * 10) / 10, 4.5, 10),
-          retained: true
+          retained: true,
+          traded: tradedNames.has(nameKey(name))
         };
       });
       const roleCount = { BAT: 0, ALL: 0, WK: 0, FAST: 0, SPIN: 0 };

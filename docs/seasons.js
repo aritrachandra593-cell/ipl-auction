@@ -1,5 +1,5 @@
 // Real 2027 IPL mini-auction data available as of 17 Nov 2026.
-// Purses/slots are from iplt20.com/auction/2027; retention/release lists are from the published franchise lists.
+// Purses/slots and retention/release/trade statuses are from iplt20.com/auction/2027.
 (function (root) {
   'use strict';
 
@@ -32,7 +32,8 @@
     'Rahmanullah Gurbaz', 'Jake Fraser-McGurk', 'Jhye Richardson', 'Mahli Beardman',
     'Jonny Bairstow', 'Sam Billings', 'Sonny Baker', 'Tom Curran',
     'Ben Sears', 'Bevon Jacobs', 'Daryl Mitchell', 'Devon Conway',
-    'Will O\'Rourke', 'Shai Hope'
+    'Will O\'Rourke', 'Shai Hope',
+    'Liam Livingstone', 'Jack Edwards', 'Nathan Ellis', 'Mitch Marsh', 'Mitch Santner'
   ]);
 
   const ROLE = {
@@ -123,7 +124,15 @@
     'Jhye Richardson': 'FAST', 'Mahli Beardman': 'FAST', 'Jonny Bairstow': 'WK',
     'Sam Billings': 'WK', 'Sonny Baker': 'FAST', 'Tom Curran': 'ALL',
     'Ben Sears': 'FAST', 'Bevon Jacobs': 'BAT', 'Daryl Mitchell': 'ALL',
-    'Devon Conway': 'WK', 'Will O\'Rourke': 'FAST', 'Shai Hope': 'WK'
+    'Devon Conway': 'WK', 'Will O\'Rourke': 'FAST', 'Shai Hope': 'WK',
+
+    'Liam Livingstone': 'BAT', 'Jack Edwards': 'ALL', 'Mohammad Shami': 'FAST',
+    'Manimaran Siddharth': 'FAST', 'Thangarasu Natarajan': 'FAST', 'Khaleel Ahmed': 'FAST',
+    'Nathan Ellis': 'FAST', 'Sai Kishore': 'SPIN', 'Mitch Marsh': 'BAT',
+    'Mitch Santner': 'SPIN', 'Raj Bawa': 'ALL', 'Akshat Raghuwanshi': 'BAT',
+    'Digvesh Singh Rathi': 'SPIN', 'Vijaykumar Vyshak': 'FAST', 'Harnoor Singh': 'BAT',
+    'Lhuan-dré Pretorius': 'WK', 'Aman Rao': 'BAT', 'Brijesh Sharma': 'FAST',
+    'Krains Fuletra': 'SPIN', 'Ravichandran Smaran': 'BAT'
   };
 
   const TIER = {
@@ -218,23 +227,35 @@
         GT: { purse: 8.75, slots: 3, overseas: 2 },
         KKR: { purse: 41.65, slots: 8, overseas: 3 },
         LSG: { purse: 47.45, slots: 7, overseas: 3 },
-        MI: { purse: 32.6, slots: 9, overseas: 2 },
+        MI: { purse: 30.25, slots: 9, overseas: 2 },
         PBKS: { purse: 18.6, slots: 6, overseas: 2 },
         RR: { purse: 27.05, slots: 6, overseas: 3 },
         RCB: { purse: 14.15, slots: 5, overseas: 1 },
         SRH: { purse: 40.15, slots: 7, overseas: 3 }
       },
       retained: {
-        CSK: ['Ruturaj Gaikwad', 'Sanju Samson', 'Kartik Sharma', 'Urvil Patel', 'Sarfaraz Khan', 'Ayush Mhatre', 'Dewald Brevis', 'Noor Ahmad', 'Akeal Hosein', 'Mukesh Choudhary', 'Jamie Overton', 'Shivam Dube', 'Ramakrishna Ghosh', 'Gurjapneet Singh', 'Anshul Kamboj', 'Shreyas Gopal', 'Rahul Chahar'],
-        DC: ['Ashutosh Sharma', 'Auqib Nabi', 'Axar Patel', 'David Miller', 'KL Rahul', 'Kyle Jamieson', 'Lungi Ngidi', 'Madhav Tiwari', 'Mukesh Kumar', 'Prithvi Shaw', 'Rishabh Pant', 'Sameer Rizvi', 'Tripurana Vijay', 'Tristan Stubbs', 'Vipraj Nigam', 'Zeeshan Ansari'],
-        GT: ['Shubman Gill', 'Sai Sudharsan', 'Jos Buttler', 'Gurnoor Brar', 'R. Sai Kishore', 'Mohammed Siraj', 'Washington Sundar', 'Rashid Khan', 'Kumar Kushagra', 'Jayant Yadav', 'Arshad Khan', 'Kagiso Rabada', 'Prasidh Krishna', 'Jason Holder', 'Nishant Sindhu', 'Manav Suthar', 'Rahul Tewatia', 'Anuj Rawat', 'Glenn Phillips', 'Ashok Sharma', 'Harshal Patel', 'Tom Banton'],
-        KKR: ['Angkrish Raghuvanshi', 'Anukul Roy', 'Cameron Green', 'Finn Allen', 'Harshit Rana', 'Kartik Tyagi', 'Manish Pandey', 'Prashant Solanki', 'Ramandeep Singh', 'Rinku Singh', 'Rovman Powell', 'Sarthak Ranjan', 'Saurabh Dubey', 'Sunil Narine', 'Tim Seifert', 'Vaibhav Arora', 'Varun Chakaravarthy'],
-        LSG: ['Abdul Samad', 'Digvesh Rathi', 'Nicholas Pooran', 'Aiden Markram', 'Josh Inglis', 'Prince Yadav', 'Akash Singh', 'Kuldeep Yadav', 'Sam Curran', 'Akshat Raghuvanshi', 'Mayank Yadav', 'Shahbaz Ahmed', 'Arjun Tendulkar', 'Mitchell Marsh', 'Arshin Kulkarni', 'Mohsin Khan', 'Ayush Badoni', 'Mukul Choudhary'],
-        MI: ['Arshdeep Singh', 'Ashwani Kumar', 'Corbin Bosch', 'Jasprit Bumrah', 'Mitchell Santner', 'Naman Dhir', 'Quinton de Kock', 'Raghu Sharma', 'Raj Angad Bawa', 'Rohit Sharma', 'Ryan Rickelton', 'Shardul Thakur', 'Sherfane Rutherford', 'Suryakumar Yadav', 'Tilak Varma', 'Will Jacks'],
-        PBKS: ['Shreyas Iyer', 'Marco Jansen', 'Marcus Stoinis', 'Hardik Pandya', 'Shashank Singh', 'Prabhsimran Singh', 'Harpreet Brar', 'Priyansh Arya', 'Yuzvendra Chahal', 'Harnoor Pannu', 'Azmatullah Omarzai', 'Yash Thakur', 'V Vyshak', 'Vishnu Vinod', 'Ben Dwarshuis', 'Cooper Connolly', 'Musheer Khan', 'Xavier Bartlett', 'Suryansh Shedge'],
-        RR: ['Riyan Parag', 'Yashasvi Jaiswal', 'Vaibhav Sooryavanshi', 'Ravindra Jadeja', 'Dhruv Jurel', 'Jofra Archer', 'Aman Rao Perala', 'Brijesh Sharma', 'Nandre Burger', 'Dasun Shanaka', 'Donovan Ferreira', 'Lhuan-dre Pretorius', 'Ravi Bishnoi', 'Sandeep Sharma', 'Shubham Dubey', 'Sushant Mishra', 'Yash Punja'],
-        RCB: ['Abhinandan Singh', 'Kanishk Chouhan', 'Suyash Sharma', 'Bhuvneshwar Kumar', 'Krunal Pandya', 'Tim David', 'Devdutt Padikkal', 'Nuwan Thushara', 'Venkatesh Iyer', 'Jacob Duffy', 'Phil Salt', 'Vicky Ostwal', 'Jitesh Sharma', 'Rajat Patidar', 'Virat Kohli', 'Jordan Cox', 'Rasikh Dar', 'Yash Dayal', 'Josh Hazlewood', 'Romario Shepherd'],
-        SRH: ['Pat Cummins', 'Abhishek Sharma', 'Ishan Kishan', 'Heinrich Klaasen', 'Nitish Kumar Reddy', 'Brydon Carse', 'Salil Arora', 'Aniket Verma', 'Harsh Dubey', 'Smaran Ravichandran', 'Praful Hinge', 'Sakib Hussain', 'Shivang Kumar', 'Krans Fuletra', 'Eshan Malinga']
+        CSK: ['Ruturaj Gaikwad', 'Sanju Samson', 'Kartik Sharma', 'Shivam Dube', 'Noor Ahmad', 'Liam Livingstone', 'Rahul Chahar', 'Anshul Kamboj', 'Jack Edwards', 'Dewald Brevis', 'Gurjapneet Singh', 'Akeal Hosein', 'Jamie Overton', 'Sarfaraz Khan', 'Mukesh Choudhary', 'Ramakrishna Ghosh', 'Shreyas Gopal', 'Ayush Mhatre', 'Urvil Patel'],
+        DC: ['Axar Patel', 'Rishabh Pant', 'KL Rahul', 'Tristan Stubbs', 'Auqib Nabi', 'Mukesh Kumar', 'Ashutosh Sharma', 'Kyle Jamieson', 'David Miller', 'Lungi Ngidi', 'Sameer Rizvi', 'Prithvi Shaw', 'Vipraj Nigam', 'Zeeshan Ansari', 'Madhav Tiwari', 'Tripurana Vijay'],
+        GT: ['Rashid Khan', 'Shubman Gill', 'Jos Buttler', 'Mohammed Siraj', 'Kagiso Rabada', 'Prasidh Krishna', 'Sai Sudharsan', 'Jason Holder', 'Harshal Patel', 'Rahul Tewatia', 'Washington Sundar', 'Tom Banton', 'Sai Kishore', 'Glenn Phillips', 'Gurnoor Brar', 'Arshad Khan', 'Ashok Sharma', 'Jayant Yadav', 'Kumar Kushagra', 'Anuj Rawat', 'Nishant Sindhu', 'Manav Suthar'],
+        KKR: ['Cameron Green', 'Rinku Singh', 'Varun Chakaravarthy', 'Sunil Narine', 'Harshit Rana', 'Ramandeep Singh', 'Angkrish Raghuvanshi', 'Finn Allen', 'Vaibhav Arora', 'Rovman Powell', 'Tim Seifert', 'Manish Pandey', 'Anukul Roy', 'Saurabh Dubey', 'Sarthak Ranjan', 'Prashant Solanki', 'Kartik Tyagi'],
+        LSG: ['Nicholas Pooran', 'Kuldeep Yadav', 'Mayank Yadav', 'Josh Inglis', 'Abdul Samad', 'Ayush Badoni', 'Mohsin Khan', 'Mitch Marsh', 'Mukul Choudhary', 'Shahbaz Ahmed', 'Sam Curran', 'Akshat Raghuwanshi', 'Aiden Markram', 'Arshin Kulkarni', 'Digvesh Singh Rathi', 'Akash Singh', 'Arjun Tendulkar', 'Prince Yadav'],
+        MI: ['Jasprit Bumrah', 'Arshdeep Singh', 'Suryakumar Yadav', 'Rohit Sharma', 'Tilak Varma', 'Naman Dhir', 'Will Jacks', 'Sherfane Rutherford', 'Mitch Santner', 'Shardul Thakur', 'Quinton de Kock', 'Ryan Rickelton', 'Corbin Bosch', 'Raj Bawa', 'Ashwani Kumar', 'Raghu Sharma'],
+        PBKS: ['Shreyas Iyer', 'Yuzvendra Chahal', 'Hardik Pandya', 'Marcus Stoinis', 'Marco Jansen', 'Shashank Singh', 'Ben Dwarshuis', 'Prabhsimran Singh', 'Priyansh Arya', 'Cooper Connolly', 'Azmatullah Omarzai', 'Vijaykumar Vyshak', 'Yash Thakur', 'Harpreet Brar', 'Vishnu Vinod', 'Xavier Bartlett', 'Musheer Khan', 'Suryansh Shedge', 'Harnoor Singh'],
+        RR: ['Yashasvi Jaiswal', 'Ravindra Jadeja', 'Dhruv Jurel', 'Riyan Parag', 'Jofra Archer', 'Mohammad Shami', 'Ravi Bishnoi', 'Sandeep Sharma', 'Nandre Burger', 'Dasun Shanaka', 'Vaibhav Sooryavanshi', 'Donovan Ferreira', 'Sushant Mishra', 'Shubham Dubey', 'Manimaran Siddharth', 'Lhuan-dré Pretorius', 'Yash Punja', 'Aman Rao', 'Brijesh Sharma'],
+        RCB: ['Virat Kohli', 'Josh Hazlewood', 'Phil Salt', 'Rajat Patidar', 'Jitesh Sharma', 'Bhuvneshwar Kumar', 'Venkatesh Iyer', 'Rasikh Dar', 'Krunal Pandya', 'Yash Dayal', 'Tim David', 'Suyash Sharma', 'Jacob Duffy', 'Devdutt Padikkal', 'Nuwan Thushara', 'Romario Shepherd', 'Jordan Cox', 'Kanishk Chouhan', 'Vicky Ostwal', 'Abhinandan Singh'],
+        SRH: ['Heinrich Klaasen', 'Pat Cummins', 'Abhishek Sharma', 'Ishan Kishan', 'Nitish Kumar Reddy', 'Thangarasu Natarajan', 'Khaleel Ahmed', 'Nathan Ellis', 'Salil Arora', 'Eshan Malinga', 'Brydon Carse', 'Harsh Dubey', 'Krains Fuletra', 'Praful Hinge', 'Sakib Hussain', 'Shivang Kumar', 'Ravichandran Smaran', 'Aniket Verma']
+      },
+      traded: {
+        CSK: ['Liam Livingstone', 'Jack Edwards'],
+        DC: ['Rishabh Pant', 'Zeeshan Ansari'],
+        GT: ['Harshal Patel'],
+        KKR: [],
+        LSG: ['Kuldeep Yadav', 'Sam Curran'],
+        MI: ['Arshdeep Singh'],
+        PBKS: ['Hardik Pandya'],
+        RR: ['Mohammad Shami', 'Manimaran Siddharth'],
+        RCB: [],
+        SRH: ['Thangarasu Natarajan', 'Khaleel Ahmed', 'Nathan Ellis']
       },
       released: {
         CSK: ['Matt Henry', 'Matt Short', 'Zak Foulkes', 'Kuldip Yadav', 'Prashant Veer', 'Macneil Noronha', 'Aman Khan', 'Spencer Johnson', 'Akash Madhwal', 'Dian Forrester'],
@@ -252,7 +273,7 @@
       confirmedBasePlayers: CONFIRMED_2CR,
       estimatedBaseByTier: ESTIMATED_BASE_BY_TIER,
       extraReleased: EXTRA_RELEASED_2027,
-      baseNote: '29 names from the supplied image are confirmed at ₹2 Cr base. All other released players have an estimated base until the final shortlist is published.'
+      baseNote: '29 names from the supplied image are confirmed at ₹2 Cr base. All other released players have an estimated base until the final shortlist is published. The 14 official traded players are locked into their new squads and never enter the auction.'
     }
   };
 

@@ -120,12 +120,13 @@
     if (selectedSeason === '2027') {
       const left = Object.values(cfg.teams || {}).reduce((sum, t) => sum + t.purse, 0);
       const retained = new Set(Object.values(cfg.retained || {}).flat().map((n) => n.toLowerCase().trim()));
+      const tradedCount = Object.values(cfg.traded || {}).flat().length;
       const names = new Set([
         ...Object.values(cfg.released || {}).flat(),
         ...(cfg.extraReleased || []).map((e) => typeof e === 'string' ? e : e.name)
       ].filter((n) => !retained.has(n.toLowerCase().trim())));
       const confirmed = (cfg.confirmedBasePlayers || []).length;
-      $('heroCopy').textContent = `Real 2027 mini auction on ${cfg.date} at ${cfg.venue}. Franchises arrive with their retained squads and ₹${moneyPrecise(left)} Cr left to fill 66 slots. ${names.size} released players go under the hammer — ${confirmed} confirmed at ₹2 Cr base, the rest estimated. Traded players are already in retained squads and excluded. No RTM cards.`;
+      $('heroCopy').textContent = `Real 2027 mini auction on ${cfg.date} at ${cfg.venue}. Franchises arrive with their retained squads and ₹${moneyPrecise(left)} Cr left to fill 66 slots. ${names.size} released players go under the hammer — ${confirmed} confirmed at ₹2 Cr base, the rest estimated. All ${tradedCount} traded players are locked into their new squads and excluded. No RTM cards.`;
       $('playerCount').textContent = names.size;
       $('playerCountLabel').textContent = 'released players';
       $('heroPurse').textContent = `₹${moneyPrecise(left)} Cr`;
@@ -538,7 +539,7 @@
       const t = findTeamState(myTeam);
       el.innerHTML = t.squad.length ? `<div class="squad-list">${t.squad.map((p) => {
         const sale = state.sold.find((s) => s.player.id === p.id);
-        return `<div class="squad-item"><span class="squad-player">${avatarHTML(p, 'squad-photo')}<span>${esc(p.name)}<br><small>${p.role}</small></span></span><b>₹${money(sale ? sale.bid : p.base)}</b></div>`;
+        return `<div class="squad-item"><span class="squad-player">${avatarHTML(p, 'squad-photo')}<span>${esc(p.name)}<br><small>${p.role}${p.traded ? ' · Traded in' : ''}</small></span></span><b>₹${money(sale ? sale.bid : p.base)}</b></div>`;
       }).join('')}</div>` : '<div class="empty-state">No players signed yet</div>';
       return;
     }
