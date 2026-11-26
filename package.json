@@ -1,0 +1,9 @@
+{
+  "name": "ipl-auction-room",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock IPL auction with real players, AI single-player mode, and live multiplayer rooms.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

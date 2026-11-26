@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IPL Auction Room</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark">🏏</span>
+        <div><strong>IPL Auction Room</strong><small>by aritracreatives · mock draft · real players · live rooms</small></div>
+      </div>
+      <div class="header-right">
+        <span class="server-dot" id="serverDot" title="Server status"></span>
+        <span id="serverLabel">Local mode</span>
+      </div>
+    </header>
+
+    <main id="homeScreen">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">The draft is live</span>
+          <h1>Build your dream IPL squad.</h1>
+          <p id="heroCopy">200+ real IPL players split into seven auction sets — M1, M2, batters, all-rounders, wicketkeepers, fast bowlers and spinners. ₹120 Cr purse per franchise, live bids, RTM cards, overseas limits and 25-man squads.</p>
+        </div>
+        <div class="hero-stats">
+          <div><strong id="playerCount">—</strong><span id="playerCountLabel">auction players</span></div>
+          <div><strong>10</strong><span>franchises</span></div>
+          <div><strong id="heroPurse">₹120 Cr</strong><span id="heroPurseLabel">each purse</span></div>
+        </div>
+      </section>
+
+      <div class="season-switch" id="seasonSwitch">
+        <button class="season-card selected" data-season="2025" type="button">
+          <span class="season-year">2025</span>
+          <b>Mega auction</b>
+          <small>7 real sets · ₹120 Cr · RTM cards</small>
+        </button>
+        <button class="season-card" data-season="2027" type="button">
+          <span class="season-year">2027</span>
+          <b>Mini auction</b>
+          <small>Retentions loaded · 66 slots · no RTM</small>
+        </button>
+      </div>
+
+      <div class="mode-grid">
+        <button class="mode-card selected" id="modeSolo" type="button" data-mode="solo">
+          <span class="mode-icon">🤖</span>
+          <span class="mode-title">Single player</span>
+          <span class="mode-desc">You control one franchise. Nine computer teams bid against you.</span>
+          <span class="mode-tag">Offline · instant start</span>
+        </button>
+        <button class="mode-card" id="modeMulti" type="button" data-mode="multi">
+          <span class="mode-icon">🌐</span>
+          <span class="mode-title">Multiplayer room</span>
+          <span class="mode-desc">Create a room, share the code, and compete live with friends.</span>
+          <span class="mode-tag">Online · needs server</span>
+        </button>
+      </div>
+
+      <section class="setup-panel" id="soloSetup">
+        <div class="setup-head">
+          <div><span class="eyebrow">Single player setup</span><h2>Pick your franchise</h2></div>
+          <div class="setup-summary" id="soloSummary">₹120 Cr purse · 25 slots · 8 overseas max</div>
+        </div>
+        <div class="team-picker" id="soloTeamPicker"></div>
+        <div class="setup-controls">
+          <label class="field">
+            <span>Your name</span>
+            <input id="soloName" type="text" value="You" maxlength="20" />
+          </label>
+          <div class="field">
+            <span>AI difficulty</span>
+            <div class="chip-row" id="difficultyPicker">
+              <button class="chip" data-difficulty="easy" type="button">Easy</button>
+              <button class="chip selected" data-difficulty="standard" type="button">Standard</button>
+              <button class="chip" data-difficulty="tough" type="button">Tough</button>
+            </div>
+          </div>
+          <label class="field">
+            <span>Bid timer: <b id="timerLabel">20s</b></span>
+            <input id="soloTimer" type="range" min="8" max="45" value="20" />
+          </label>
+        </div>
+        <button class="primary big" id="startSolo" type="button">Start auction 🚀</button>
+      </section>
+
+      <section class="setup-panel" id="multiSetup" hidden>
+        <div class="setup-head">
+          <div><span class="eyebrow">Multiplayer</span><h2>Create or join a room</h2></div>
+          <div class="setup-summary">Each player controls one franchise</div>
+        </div>
+        <div class="room-tabs">
+          <button class="room-tab selected" data-room-tab="create" type="button">Create room</button>
+          <button class="room-tab" data-room-tab="join" type="button">Join room</button>
+        </div>
+
+        <div id="createRoomPane" class="room-pane">
+          <div class="field-row">
+            <label class="field"><span>Your name</span><input id="createName" type="text" value="Host" maxlength="20" /></label>
+            <label class="field"><span>Timer: <b id="createTimerLabel">20s</b></span><input id="createTimer" type="range" min="8" max="45" value="20" /></label>
+          </div>
+          <span class="field-label">Choose your franchise</span>
+          <div class="team-picker compact" id="createTeamPicker"></div>
+          <button class="primary big" id="createRoom" type="button">Create room &amp; get code</button>
+        </div>
+
+        <div id="joinRoomPane" class="room-pane" hidden>
+          <div class="field-row">
+            <label class="field"><span>Room code</span><input id="joinCode" type="text" maxlength="6" placeholder="AB12C" style="text-transform:uppercase" /></label>
+            <label class="field"><span>Your name</span><input id="joinName" type="text" value="Player" maxlength="20" /></label>
+          </div>
+          <span class="field-label">Choose an available franchise</span>
+          <div class="team-picker compact" id="joinTeamPicker"></div>
+          <button class="primary big" id="joinRoom" type="button">Join room →</button>
+        </div>
+      </section>
+
+      <p class="footer-note">2025 uses real IPL 2025 squads. 2027 uses published retentions/releases as of 17 Nov 2026 with official purses and slots; 29 names from the supplied list have a confirmed ₹2 Cr base and the rest have estimated bases. Photos from Wikipedia/Wikimedia Commons where freely available; ratings and outcomes are for mock-auction entertainment.</p>
+    </main>
+
+    <section id="auctionScreen" hidden>
+      <header class="auction-header">
+        <div class="auction-brand"><span class="brand-mark">🏏</span><div><strong>IPL Auction</strong><small>by aritracreatives</small></div></div>
+        <div class="auction-meta">
+          <span class="mode-badge" id="modeBadge">SINGLE PLAYER</span>
+          <span class="small-pill" id="seasonBadge">2025 MEGA</span>
+          <button class="code-chip" id="roomCodeChip" type="button" hidden>CODE: —</button>
+          <span class="live-dot" id="liveDot"></span>
+          <span id="liveLabel">Waiting</span>
+        </div>
+        <button class="ghost" id="leaveAuction" type="button">Leave</button>
+      </header>
+
+      <div class="auction-grid">
+        <aside class="col-a">
+          <section class="panel player-panel">
+            <div class="panel-title">Current player</div>
+            <div id="currentPlayer" class="current-player"><div class="empty-state">Auction not started</div></div>
+          </section>
+
+          <section class="panel bid-panel">
+            <div class="panel-title">Live bid <span id="bidStatus" class="small-pill">Waiting</span></div>
+            <div class="bid-display">
+              <div><span class="rupee">₹</span><strong id="currentBid">0.0</strong><span class="cr">Cr</span></div>
+              <div class="timer-ring" id="timerRing"><span id="timerValue">20</span></div>
+            </div>
+            <div class="leader-line" id="leaderLine">No bids yet</div>
+            <div class="bid-actions" id="bidActions"></div>
+            <div class="host-actions" id="hostActions"></div>
+          </section>
+
+          <section class="panel" id="myPanel">
+            <div class="panel-title">Your franchise</div>
+            <div id="myTeamCard"></div>
+          </section>
+        </aside>
+
+        <main class="col-b">
+          <div class="tabs" id="feedTabs">
+            <button class="tab selected" data-tab="log" type="button">Bid log</button>
+            <button class="tab" data-tab="squad" type="button">My squad</button>
+            <button class="tab" data-tab="pool" type="button">Player sets</button>
+            <button class="tab" data-tab="sold" type="button">Sold</button>
+            <button class="tab" data-tab="chat" type="button" id="chatTab" hidden>Chat</button>
+          </div>
+          <section class="panel feed-panel">
+            <div id="feedContent" class="feed-content"></div>
+          </section>
+        </main>
+
+        <aside class="col-c">
+          <section class="panel teams-panel">
+            <div class="panel-title">Franchises <span class="small-pill" id="soldCount">0 sold</span></div>
+            <div id="teamsList" class="teams-list"></div>
+          </section>
+          <section class="panel chat-panel" id="chatPanel" hidden>
+            <div class="panel-title">Room chat</div>
+            <div id="chatFeed" class="chat-feed"></div>
+            <div class="chat-input-row"><input id="chatInput" type="text" maxlength="140" placeholder="Say something..." /><button id="chatSend" type="button">Send</button></div>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="copyright">© 2026 aritracreatives. All rights reserved. Player photos retain their original source credits.</footer>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal-card" id="modalCard" role="dialog"></div>
+  </div>
+
+  <script src="players-data.js"></script>
+  <script src="player-images.js"></script>
+  <script src="seasons.js"></script>
+  <script src="auction-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
