@@ -119,12 +119,13 @@
     document.querySelectorAll('[data-season]').forEach((btn) => btn.classList.toggle('selected', btn.dataset.season === selectedSeason));
     if (selectedSeason === '2027') {
       const left = Object.values(cfg.teams || {}).reduce((sum, t) => sum + t.purse, 0);
+      const retained = new Set(Object.values(cfg.retained || {}).flat().map((n) => n.toLowerCase().trim()));
       const names = new Set([
         ...Object.values(cfg.released || {}).flat(),
         ...(cfg.extraReleased || []).map((e) => typeof e === 'string' ? e : e.name)
-      ]);
+      ].filter((n) => !retained.has(n.toLowerCase().trim())));
       const confirmed = (cfg.confirmedBasePlayers || []).length;
-      $('heroCopy').textContent = `Real 2027 mini auction on ${cfg.date} at ${cfg.venue}. Franchises arrive with their retained squads and ₹${moneyPrecise(left)} Cr left to fill 66 slots. ${names.size} released players go under the hammer — ${confirmed} confirmed at ₹2 Cr base, the rest estimated. No RTM cards.`;
+      $('heroCopy').textContent = `Real 2027 mini auction on ${cfg.date} at ${cfg.venue}. Franchises arrive with their retained squads and ₹${moneyPrecise(left)} Cr left to fill 66 slots. ${names.size} released players go under the hammer — ${confirmed} confirmed at ₹2 Cr base, the rest estimated. Traded players are already in retained squads and excluded. No RTM cards.`;
       $('playerCount').textContent = names.size;
       $('playerCountLabel').textContent = 'released players';
       $('heroPurse').textContent = `₹${moneyPrecise(left)} Cr`;
@@ -335,7 +336,10 @@
         case 'start': state.paused = false; result = Core.startAuction(state); break;
         case 'bid': result = Core.placeBid(state, myTeam, amount, 'you'); break;
         case 'rtm': result = Core.useRTM(state, myTeam); break;
-        case 'next': result = Core.forceNext(state); break;
+        case 'next':
+          result = Core.forceNext(state);
+          if (result.ok && state.current) showToast(`Next: ${state.current.player.name} · base ₹${money(state.current.player.base)} Cr`);
+          break;
         case 'pause': state.paused = true; result = { ok: true }; break;
         case 'resume': state.paused = false; result = { ok: true }; break;
         case 'restart': showHome(); setMode('solo'); return;
@@ -424,6 +428,7 @@
     $('leaderLine').innerHTML = leader
       ? `Highest bidder: <b style="color:${teamById(leader).color}">${esc(leader)}</b> · ${state.current.bids.length} bids`
       : 'No bids yet — the floor price is on the table.';
+    $('floorLine').textContent = state.current ? `Base price: ₹${money(state.current.player.base)} Cr${state.current.player.baseSource === 'confirmed' ? ' · confirmed' : state.current.player.baseSource === 'estimated' ? ' · estimated' : ''}` : 'Base ₹— Cr';
 
     const actions = $('bidActions');
     const host = $('hostActions');

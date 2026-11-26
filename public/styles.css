@@ -162,8 +162,9 @@ button:disabled { cursor: not-allowed; opacity: 0.42; }
 .timer-ring::after { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: #0c1e2c; }
 .timer-ring span { position: relative; z-index: 1; font-weight: 800; font-size: 15px; }
 .timer-ring.urgent { background: conic-gradient(var(--red) var(--pct, 100%), rgba(255,255,255,0.08) 0); }
-.leader-line { color: var(--muted); font-size: 12px; margin: 8px 0 12px; min-height: 18px; }
+.leader-line { color: var(--muted); font-size: 12px; margin: 8px 0 4px; min-height: 18px; }
 .leader-line b { color: var(--text); }
+.floor-line { color: var(--gold); font-size: 11px; font-weight: 800; letter-spacing: 0.3px; margin: 0 0 12px; }
 .bid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .bid-btn { border: 1px solid rgba(251,191,36,0.32); background: rgba(251,191,36,0.1); color: var(--gold); border-radius: 10px; padding: 10px 8px; font-weight: 800; font-size: 12px; }
 .bid-btn:hover:not(:disabled) { background: rgba(251,191,36,0.2); }

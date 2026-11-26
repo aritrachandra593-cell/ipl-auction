@@ -123,11 +123,12 @@
     if (!cfg) return raw;
     const byName = rawByName(raw);
     const seen = new Set();
+    const retainedNames = new Set(Object.values(cfg.retained || {}).flat().map(nameKey));
     const players = [];
     Object.keys(cfg.released || {}).forEach((teamId) => {
       (cfg.released[teamId] || []).forEach((name) => {
         const key = nameKey(name);
-        if (seen.has(key)) return;
+        if (seen.has(key) || retainedNames.has(key)) return;
         seen.add(key);
         const meta = metaForName(name, byName, cfg);
         players.push({ name, role: meta.role, country: meta.country, lastTeam: teamId, tier: meta.tier });
@@ -136,7 +137,7 @@
     (cfg.extraReleased || []).forEach((entry) => {
       const name = typeof entry === 'string' ? entry : entry.name;
       const key = nameKey(name);
-      if (seen.has(key)) return;
+      if (seen.has(key) || retainedNames.has(key)) return;
       seen.add(key);
       const meta = metaForName(name, byName, cfg);
       players.push({
@@ -385,7 +386,7 @@
     return { ok: true };
   }
 
-  function finishPlayer(state) {
+  function finishPlayer(state, forced = false) {
     if (!state.current || state.status !== 'live') return;
     const { player, leader, bid } = state.current;
     const pool = state.pools && state.pools.find((p) => p.id === player.pool);
@@ -402,12 +403,14 @@
         }
         team.roleCount[player.role] = (team.roleCount[player.role] || 0) + 1;
         state.sold.unshift({ player, team: leader, bid, at: Date.now() });
-        addLog(state, `SOLD! ${player.name} to ${team.short} for ₹${bid.toFixed(1)} Cr.`, 'sold');
+        addLog(state, `${forced ? 'Host advanced — ' : ''}SOLD! ${player.name} to ${team.short} for ₹${bid.toFixed(1)} Cr.`, 'sold');
       }
     } else {
       if (pool) pool.unsold += 1;
       state.unsold.unshift(player);
-      addLog(state, `${player.name} goes unsold at ₹${player.base.toFixed(1)} Cr.`, 'unsold');
+      addLog(state, forced
+        ? `Host skipped ${player.name} at base ₹${player.base.toFixed(1)} Cr.`
+        : `${player.name} goes unsold at ₹${player.base.toFixed(1)} Cr.`, 'unsold');
     }
     state.status = leader ? 'sold' : 'unsold';
     state.advanceIn = 3;
@@ -415,7 +418,7 @@
   }
 
   function forceNext(state) {
-    if (state.status === 'live') finishPlayer(state);
+    if (state.status === 'live') finishPlayer(state, true);
     state.advanceIn = 0;
     loadNextPlayer(state);
     return { ok: true };
