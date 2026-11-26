@@ -41,6 +41,16 @@ Do **not** use `localhost` on the phone — `localhost` means the phone itself. 
 
 Set `PORT` to change the port, for example `set PORT=5000 && npm start` on Windows.
 
+### GitHub Pages (solo mode anywhere)
+
+The static site is published at:
+
+```text
+https://aritrachandra593-cell.github.io/ipl-auction/
+```
+
+Pages serves the `docs/` folder, which is a copy of `public/`. After changing frontend files, run `npm run sync:pages` and commit the `docs/` changes. Multiplayer needs the Node server, so it only works through `npm start` or a deployed backend.
+
 ## Player photos
 
 Photos are downloaded once into `public/images/players` and indexed in `public/player-images.js`. The app works offline with those local files. Players without a free Wikimedia image show initials instead.

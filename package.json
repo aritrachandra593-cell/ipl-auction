@@ -4,6 +4,7 @@
   "private": true,
   "description": "Mock IPL auction with real players, AI single-player mode, and live multiplayer rooms.",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "sync:pages": "node tools/sync-docs.js"
   }
 }
