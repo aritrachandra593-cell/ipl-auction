@@ -53,15 +53,18 @@ Pages serves the `docs/` folder, which is a copy of `public/`. After changing fr
 
 ## Player photos
 
-Photos are downloaded once into `public/images/players` and indexed in `public/player-images.js`. The app works offline with those local files. Players without a free Wikimedia image show initials instead.
+Photos are downloaded once into `public/images/players` and indexed in `public/player-images.js`. The app works offline with those local files. Photos come from Wikipedia/Wikimedia Commons where freely available, then official iplt20.com team squad thumbnails, then ESPNcricinfo headshots for the remaining names. Players with no available photo show initials instead.
 
 To refresh the photo set:
 
 ```bat
 node tools/fetch-player-images.js
+node tools/fetch-ipl-player-images.js
+node tools/fetch-wikipedia-missing.js
+node tools/fetch-espn-missing.js
 ```
 
-Attribution and license are shown under the current player and in each image tooltip. Source pages are linked in `public/player-images.js`.
+Attribution and license are shown under the current player and in each image tooltip. Source pages are linked in `public/player-images.js`. Official IPL and ESPN images are credited to their owners and are used here in a non-commercial fan demo.
 
 ## Features
 
@@ -69,7 +72,7 @@ Attribution and license are shown under the current player and in each image too
 - 207 real IPL 2025 players with role, tier, country, former franchise and mock auction base price
 - 105 released players in the 2027 pool: 29 confirmed ₹2 Cr base names from the supplied image, 76 estimated bases; all 14 traded/retained players excluded; real per-team purses, slots and overseas limits from the IPL site
 - Seven real auction sets: M1 marquee, M2 marquee, batters, all-rounders, wicketkeepers, fast bowlers and spinners; marquee players start at the real ₹2 Cr base price
-- Local player photos from Wikipedia/Wikimedia Commons where freely available (93 players), with initials fallbacks and visible photo credit
+- Local player photos from Wikipedia/Wikimedia Commons, official iplt20.com squad pages and ESPNcricinfo, with initials fallbacks and visible photo credit
 - Real IPL 2025 rules: ₹120 Cr auction purse, 25-player squad cap and 8-overseas limit per team
 - Real IPL 2025 team prize money shown at auction end: winner ₹20 Cr, runner-up ₹12.5 Cr, third ₹7 Cr, fourth ₹6.5 Cr
 - Live bid timer, bid increments, sold/unsold feed, RTM cards, filterable set-by-set player list and final squads
